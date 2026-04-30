@@ -9,8 +9,21 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const data = await SubCategory.find().populate("category");
-  res.json(data);
+  try {
+    const { category } = req.query;
+
+    let filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    const data = await SubCategory.find(filter).populate("category");
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.put("/:id", async (req, res) => {

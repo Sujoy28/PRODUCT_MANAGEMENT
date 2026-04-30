@@ -8,8 +8,22 @@ const SubCategory = require("../models/SubCategory");
 
 
 router.post("/", async (req, res) => {
-  const product = await Product.create(req.body);
-  res.json(product);
+  try {
+    const { name, description, price, category, subcategory, images } = req.body;
+
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      subcategory,
+      images
+    });
+
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 
